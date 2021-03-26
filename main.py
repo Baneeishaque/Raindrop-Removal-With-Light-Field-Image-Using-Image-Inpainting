@@ -6,20 +6,20 @@ from scipy import ndimage
 depthMapImage = cv.imread('depth_01.png', cv.IMREAD_ANYDEPTH)
 
 # converting to its binary form
-ret, bw_img = cv.threshold(depthMapImage, 127, 255, cv.THRESH_BINARY)
+ret, binaryDepthMapImage = cv.threshold(depthMapImage, 127, 255, cv.THRESH_BINARY)
 
 cv.imshow("Original Depth Map Iamge", depthMapImage)
-cv.imshow("Binary Image of Depth Map Image", bw_img)
+cv.imshow("Binary Image of Depth Map Image", binaryDepthMapImage)
 
 kernel = np.ones((5, 5), np.uint8)
-closing = cv.morphologyEx(bw_img, cv.MORPH_CLOSE, kernel)
-cv.imshow("Binary Image of Depth Map after Closing", closing)
+binaryDepthMapImageWithClosing = cv.morphologyEx(binaryDepthMapImage, cv.MORPH_CLOSE, kernel)
+cv.imshow("Binary Image of Depth Map after Closing", binaryDepthMapImageWithClosing)
 
-opening = cv.morphologyEx(closing, cv.MORPH_OPEN, kernel)
-cv.imshow("Binary Image of Depth Map after Closing & Opening", opening)
+binaryDepthMapImageWithClosingAndOpening = cv.morphologyEx(binaryDepthMapImageWithClosing, cv.MORPH_OPEN, kernel)
+cv.imshow("Binary Image of Depth Map after Closing & Opening", binaryDepthMapImageWithClosingAndOpening)
 
-erosion = cv.erode(opening, kernel, iterations=1)
-cv.imshow("Binary Image of Depth Map after Closing, Opening & Erosion", opening)
+binaryDepthMapImageWithClosingOpeningAndErosion = cv.erode(binaryDepthMapImageWithClosingAndOpening, kernel, iterations=1)
+cv.imshow("Binary Image of Depth Map after Closing, Opening & Erosion", binaryDepthMapImageWithClosingOpeningAndErosion)
 
 lightFieldImage = cv.imread('img_01.png')
 
@@ -37,6 +37,15 @@ highPassFilteredImage = highPassFilteredImage.squeeze() # Remove singleton dimen
 
 cv.imshow("Original Image", lightFieldImage)
 cv.imshow("High Pass Filtered Image", highPassFilteredImage)
+
+binaryDepthMapImageWithClosingOpeningAndErosionHeight,binaryDepthMapImageWithClosingOpeningAndErosionWidth = binaryDepthMapImageWithClosingOpeningAndErosion.shape[:2]
+
+resizedhighPassFilteredImage=cv.resize(highPassFilteredImage, (binaryDepthMapImageWithClosingOpeningAndErosionWidth,binaryDepthMapImageWithClosingOpeningAndErosionHeight), interpolation = cv.INTER_AREA)
+cv.imshow("High Pass Filtered Image after Resize", resizedhighPassFilteredImage)
+
+maskedHighPassFilteredImage = cv.bitwise_and(resizedhighPassFilteredImage, resizedhighPassFilteredImage, mask=binaryDepthMapImageWithClosingOpeningAndErosion)
+
+cv.imshow("Resized High Pass Filtered Image after Masking", maskedHighPassFilteredImage)
 
 cv.waitKey(0)
 cv.destroyAllWindows()
