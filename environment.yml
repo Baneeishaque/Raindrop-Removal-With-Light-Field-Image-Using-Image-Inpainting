@@ -1,0 +1,7 @@
+name: Raindrop-Removal-With-Light-Field-Image-Using-Image-Inpainting
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - opencv
+  - scipy
