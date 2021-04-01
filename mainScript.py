@@ -47,5 +47,11 @@ maskedHighPassFilteredImage = cv.bitwise_and(resizedhighPassFilteredImage, resiz
 
 cv.imshow("Resized High Pass Filtered Image after Masking", maskedHighPassFilteredImage)
 
+# Using cv2.imwrite() method
+# Saving the image
+cv.imwrite('resizedhighPassFilteredImage_01.png', resizedhighPassFilteredImage)
+cv.imwrite('binaryDepthMapImageWithClosingOpeningAndErosion_01.png', binaryDepthMapImageWithClosingOpeningAndErosion)
+cv.imwrite('maskedHighPassFilteredImage_01.png', maskedHighPassFilteredImage)
+
 cv.waitKey(0)
 cv.destroyAllWindows()
