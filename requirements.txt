@@ -1,2 +1,5 @@
+scipy==1.2.1
 opencv
-scipy
+torchvision
+pyaml
+scikit-image
