@@ -1,4 +1,4 @@
-FROM baneeishaque/gitpod-workspace-full-vnc-1366x768-tint2-pcmanfm-zsh-anaconda3-2020-11
+FROM baneeishaque/gitpod-workspace-full-vnc-1280x1024-tint2-pcmanfm-zsh-anaconda3-2020-11
 
 RUN cd $HOME \
  && wget "https://raw.githubusercontent.com/Baneeishaque/Raindrop-Removal-With-Light-Field-Image-Using-Image-Inpainting/main/environment.yml" \
