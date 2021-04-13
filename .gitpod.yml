@@ -2,13 +2,14 @@ image:
   file: .gitpod.Dockerfile
 
 tasks:
-  # - init: /usr/bin/start-vnc-session.sh
-  - command: zsh
-  - command: git clone --depth 1 "https://github.com/Baneeishaque/gitpod-workspace-full-vnc-1366x768-tint2-pcmanfm-zsh-android-studio.git" android-studio-config && mkdir -p ~/.config/Google && ln -s `pwd`/android-studio-config/AndroidStudio4.1-config ~/.config/Google/AndroidStudio4.1 && mkdir -p ~/.local/share/Google && ln -s `pwd`/android-studio-config/AndroidStudio4.1-local ~/.local/share/Google/AndroidStudio4.1 && cd /usr/local/android-studio/bin/ && ./studio.sh
-  # - init: gh auth login
-  # - command: git clone --depth 1 "https://gitlab.com/baneeishaque/gitpod-workspace-full-vnc-1366x768-tint2-pcmanfm-zsh-android-studio-gh-chrome-private.git" chrome-config && export CHROME_CONFIG_HOME="`pwd`/chrome-config" && google-chrome --disable-dev-shm-usage
-  - command: git clone --depth 1 "https://github.com/Baneeishaque/gitpod-workspace-full-vnc-1366x768-tint2-pcmanfm-zsh-android-studio-gh-chrome-intellij-idea.git" intellij-idea-config && mkdir -p ~/.config/JetBrains && ln -s `pwd`/intellij-idea-config/IntelliJIdea2021.1-config ~/.config/JetBrains/IntelliJIdea2021.1 && mkdir -p ~/.local/share/JetBrains && ln -s `pwd`/android-studio-config/IntelliJIdea2021.1-local ~/.local/share/JetBrains/IntelliJIdea2021.1 && cd /usr/local/idea-IU-211.6693.111/bin/ && ./idea.sh
-  - command: git clone --depth 1 "https://github.com/Baneeishaque/gitpod-workspace-full-vnc-1366x768-tint2-pcmanfm-zsh-android-studio-gh-chrome-intellij-idea-pycharm.git" pycharm-config && mkdir -p ~/.config/JetBrains && ln -s `pwd`/pycharm-config/Pycharm2021.1-config ~/.config/JetBrains/PyCharm2021.1 && mkdir -p ~/.local/share/JetBrains && ln -s `pwd`/pycharm-config/Pycharm2021.1-local ~/.local/share/JetBrains/PyCharm2021.1 && cd /usr/local/pycharm-2021.1/bin/ && ./pycharm.sh
+# - init: /usr/bin/start-vnc-session.sh
+# - command: zsh
+# - command: git clone --depth 1 "https://github.com/Baneeishaque/gitpod-workspace-full-vnc-1366x768-tint2-pcmanfm-zsh-android-studio.git" android-studio-config && mkdir -p ~/.config/Google && ln -s `pwd`/android-studio-config/AndroidStudio4.1-config ~/.config/Google/AndroidStudio4.1 && mkdir -p ~/.local/share/Google && ln -s `pwd`/android-studio-config/AndroidStudio4.1-local ~/.local/share/Google/AndroidStudio4.1 && cd /usr/local/android-studio/bin/ && ./studio.sh
+# - command: git clone --depth 1 "https://github.com/Baneeishaque/gitpod-workspace-full-vnc-1366x768-tint2-pcmanfm-zsh-android-studio-gh-chrome-intellij-idea.git" intellij-idea-config && mkdir -p ~/.config/JetBrains && ln -s `pwd`/intellij-idea-config/IntelliJIdea2021.1-config ~/.config/JetBrains/IntelliJIdea2021.1 && mkdir -p ~/.local/share/JetBrains && ln -s `pwd`/android-studio-config/IntelliJIdea2021.1-local ~/.local/share/JetBrains/IntelliJIdea2021.1 && cd /usr/local/idea-IU-211.6693.111/bin/ && ./idea.sh
+# - command: git clone --depth 1 "https://github.com/Baneeishaque/gitpod-workspace-full-vnc-1366x768-tint2-pcmanfm-zsh-android-studio-gh-chrome-intellij-idea-pycharm.git" pycharm-config && mkdir -p ~/.config/JetBrains && ln -s `pwd`/pycharm-config/Pycharm2021.1-config ~/.config/JetBrains/PyCharm2021.1 && mkdir -p ~/.local/share/JetBrains && ln -s `pwd`/pycharm-config/Pycharm2021.1-local ~/.local/share/JetBrains/PyCharm2021.1 && cd /usr/local/pycharm-2021.1/bin/ && ./pycharm.sh
+# - command: git clone --depth 1 "https://github.com/Baneeishaque/gitpod-full-1366x768-tint2-pcmanfm-zsh-as-gh-chrome-idea-pycharm-anaconda3-2020-11-as-canary.git" android-studio-canary-config && mkdir -p ~/.config/Google && ln -s `pwd`/android-studio-canary-config/AndroidStudioPreview2020.3-config ~/.config/Google/AndroidStudioPreview2020.3 && mkdir -p ~/.local/share/Google && ln -s `pwd`/android-studio-canary-config/AndroidStudioPreview2020.3-local ~/.local/share/Google/AndroidStudioPreview2020.3 && cd /usr/local/android-studio-canary/bin/ && ./studio.sh  
+# - init: gh auth login
+# - command: git clone --depth 1 "https://gitlab.com/baneeishaque/gitpod-workspace-full-vnc-1366x768-tint2-pcmanfm-zsh-android-studio-gh-chrome-private.git" chrome-config && export CHROME_CONFIG_HOME="`pwd`/chrome-config" && google-chrome --disable-dev-shm-usage
 
 # Ports to expose on workspace startup
 ports:
@@ -16,8 +17,26 @@ ports:
     onOpen: ignore
   - port: 6080
     onOpen: open-preview
+  - port: 8599
+    onOpen: ignore
+  - port: 6942
+    onOpen: ignore
+  - port: 6943
+    onOpen: ignore
+  - port: 5037
+    onOpen: ignore
 
 vscode:
   extensions:
     - ms-python.python@2020.10.332292344:5ctthQ25Qni5/aAuOIUTYQ==
-    
+    - codezombiech.gitignore@0.6.0:oJP0UqwrXt2Qgt5QRm1BIQ==
+    - maddog986.autodocblocker@1.0.2:ey8TGFw83C4aegTkW13AGA==
+    - guillaumeisabelle.gixdeko-comments@1.0.115:9iBdt1vwBj1/tP0ccsdtvw==
+    - owenfarrell.vscode-microtask@1.0.3:HKM415Hmq45XFIL1HeIdbQ==
+    - naturalclar.workspace-settings-json@0.0.10:dO7CSbCBQvxSAZIgNH/jUQ==
+    - vikas.code-navigation@0.2.0:1hbbiHl71QiJoOjQyzbewQ==
+    - haugerbr.project-tasks@1.0.0:z8G8HNMDr3s2qYGsbM5MrQ==
+    - mhutchie.git-graph@1.28.0:8NH1WgOknx0p2byYkmBcrQ==
+    - reduckted.vscode-gitweblinks@2.3.0:3DLrLpucmTzBIefwl1BMuQ==
+    # - Github Pull Requests and Issues
+    # - GitLens - Git supercharged
