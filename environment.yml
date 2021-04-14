@@ -11,3 +11,4 @@ dependencies:
   - pyaml
   - scikit-image
   - jupyterlab
+  - pillow

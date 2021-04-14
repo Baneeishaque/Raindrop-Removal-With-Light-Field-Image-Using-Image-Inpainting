@@ -6,3 +6,5 @@ yaml
 pyyaml
 numpy
 matplotlib
+jupyterlab
+pillow
