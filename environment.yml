@@ -10,3 +10,4 @@ dependencies:
   - torchvision
   - pyaml
   - scikit-image
+  - jupyterlab

@@ -1,5 +1,8 @@
-scipy==1.2.1
-opencv-python
+scipy
 torchvision
-pyaml
 scikit-image
+pillow
+yaml
+pyyaml
+numpy
+matplotlib
