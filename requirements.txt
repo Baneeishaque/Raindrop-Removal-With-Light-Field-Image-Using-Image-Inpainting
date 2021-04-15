@@ -1,10 +1,10 @@
-scipy
+scipy==1.2.1
+opencv-python
 torchvision
-scikit-image
-pillow
-yaml
 pyyaml
+scikit-image
 numpy
 matplotlib
 jupyterlab
 pillow
+
