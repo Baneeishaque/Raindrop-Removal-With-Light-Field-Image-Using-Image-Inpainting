@@ -7,4 +7,4 @@ numpy
 matplotlib
 jupyterlab
 pillow
-
+pylint
