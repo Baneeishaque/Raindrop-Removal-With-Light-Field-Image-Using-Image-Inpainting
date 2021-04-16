@@ -28,6 +28,8 @@ ports:
     onOpen: ignore
   - port: 8888
     onOpen: ignore
+  - port: 8988
+    onOpen: ignore  
 
 vscode:
   extensions:
