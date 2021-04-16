@@ -459,3 +459,4 @@ cython_debug/
 compositeImage_01.png
 invertedBinaryDepthMapImageWithClosingOpeningAndErosion_01.png
 resizedOriginalImage_01.png
+whiteImage.png
