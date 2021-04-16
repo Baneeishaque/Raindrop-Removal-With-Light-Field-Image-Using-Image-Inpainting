@@ -10,6 +10,7 @@ image:
 # - command: git clone --depth 1 "https://github.com/Baneeishaque/gitpod-full-1366x768-tint2-pcmanfm-zsh-as-gh-chrome-idea-pycharm-anaconda3-2020-11-as-canary.git" android-studio-canary-config && mkdir -p ~/.config/Google && ln -s `pwd`/android-studio-canary-config/AndroidStudioPreview2020.3-config ~/.config/Google/AndroidStudioPreview2020.3 && mkdir -p ~/.local/share/Google && ln -s `pwd`/android-studio-canary-config/AndroidStudioPreview2020.3-local ~/.local/share/Google/AndroidStudioPreview2020.3 && cd /usr/local/android-studio-canary/bin/ && ./studio.sh  
 # - init: gh auth login
 # - command: git clone --depth 1 "https://gitlab.com/baneeishaque/gitpod-workspace-full-vnc-1366x768-tint2-pcmanfm-zsh-android-studio-gh-chrome-private.git" chrome-config && export CHROME_CONFIG_HOME="`pwd`/chrome-config" && google-chrome --disable-dev-shm-usage
+# - command: cd .. && jupyter-lab --ContentsManager.allow_hidden=True
 
 # Ports to expose on workspace startup
 ports:
