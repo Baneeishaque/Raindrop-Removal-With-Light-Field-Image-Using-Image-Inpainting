@@ -456,3 +456,6 @@ cython_debug/
 
 # .nfs files are created when an open file is removed but is still being accessed
 
+compositeImage_01.png
+invertedBinaryDepthMapImageWithClosingOpeningAndErosion_01.png
+resizedOriginalImage_01.png

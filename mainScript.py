@@ -1,62 +1,92 @@
 import cv2 as cv
 import numpy as np
 from scipy import ndimage
+from PIL import Image
 
-# read the image file
+# Processing Depth Map Image file
+# Read the depth map image file
 depthMapImage = cv.imread('depth_01.png', cv.IMREAD_ANYDEPTH)
 
-# converting to its binary form
-# ret, binaryDepthMapImage = cv.threshold(depthMapImage, 127, 255, cv.THRESH_BINARY)
+# Converting depth map image to its inverted binary form
+ret, invertedBinaryDepthMapImage = cv.threshold(depthMapImage, 127, 255, cv.THRESH_BINARY_INV)
 
-cv.imshow("Original Depth Map Image", depthMapImage)
-# cv.imshow("Binary Image of Depth Map Image", binaryDepthMapImage)
+# Show the image with opencv
+# cv.imshow("Original Depth Map Image", depthMapImage)
+# cv.imshow("Binary Image of Depth Map Image", invertedBinaryDepthMapImage)
 
+# Closing operation on Inverted Binary Image of Depth Map Image
 kernel = np.ones((5, 5), np.uint8)
-# binaryDepthMapImageWithClosing = cv.morphologyEx(binaryDepthMapImage, cv.MORPH_CLOSE, kernel)
-# cv.imshow("Binary Image of Depth Map after Closing", binaryDepthMapImageWithClosing)
+invertedBinaryDepthMapImageWithClosing = cv.morphologyEx(invertedBinaryDepthMapImage, cv.MORPH_CLOSE, kernel)
+# cv.imshow("Inverted Binary Image of Depth Map after Closing", invertedBinaryDepthMapImageWithClosing)
 
-# binaryDepthMapImageWithClosingAndOpening = cv.morphologyEx(binaryDepthMapImageWithClosing, cv.MORPH_OPEN, kernel)
-# cv.imshow("Binary Image of Depth Map after Closing & Opening", binaryDepthMapImageWithClosingAndOpening)
+# Opening Operation on Inverted Binary Image of Depth Map Image
+invertedBinaryDepthMapImageWithClosingAndOpening = cv.morphologyEx(invertedBinaryDepthMapImageWithClosing,cv.MORPH_OPEN, kernel)
+# cv.imshow("Inverted Binary Image of Depth Map after Closing & Opening", invertedBinaryDepthMapImageWithClosingAndOpening)
 
-# binaryDepthMapImageWithClosingOpeningAndErosion = cv.erode(binaryDepthMapImageWithClosingAndOpening, kernel,
-                                                        #    iterations=1)
-# cv.imshow("Binary Image of Depth Map after Closing, Opening & Erosion", binaryDepthMapImageWithClosingOpeningAndErosion)
+# Erosion Operation on Inverted Binary Image of Depth Map Image
+invertedBinaryDepthMapImageWithClosingOpeningAndErosion = cv.erode(invertedBinaryDepthMapImageWithClosingAndOpening, kernel, iterations=1)
+# cv.imshow("Inverted Binary Image of Depth Map after Closing, Opening & Erosion", invertedBinaryDepthMapImageWithClosingOpeningAndErosion)
 
+# Processing Original Image
 lightFieldImage = cv.imread('img_01.png')
 
+# High Pass Filter
 highPassFilter = np.array([[0, -1, 0],
                            [-1, 5, -1],
                            [0, -1, 1]])
 
 print("Shape of Original Image", lightFieldImage.shape)
 print("Shape of High Pass Filter", highPassFilter.shape)
-highPassFilter = highPassFilter[:, :, None]  # Add singleton dimension
+
+# Add singleton dimension to High Pass Filter
+highPassFilter = highPassFilter[:, :, None]
 print("Shape of High Pass Filter", highPassFilter.shape)
 
+# Apply High Pass Filter
 highPassFilteredImage = ndimage.convolve(lightFieldImage, highPassFilter)
-highPassFilteredImage = highPassFilteredImage.squeeze()  # Remove singleton dimension
 
-cv.imshow("Original Image", lightFieldImage)
-cv.imshow("High Pass Filtered Image", highPassFilteredImage)
+# Remove singleton dimension
+highPassFilteredImage = highPassFilteredImage.squeeze()
 
-# binaryDepthMapImageWithClosingOpeningAndErosionHeight, binaryDepthMapImageWithClosingOpeningAndErosionWidth = \
-    # binaryDepthMapImageWithClosingOpeningAndErosion.shape[:2]
+# cv.imshow("Original Image", lightFieldImage)
+# cv.imshow("High Pass Filtered Image", highPassFilteredImage)
 
-# resizedHighPassFilteredImage = cv.resize(highPassFilteredImage, (
-    # binaryDepthMapImageWithClosingOpeningAndErosionWidth, binaryDepthMapImageWithClosingOpeningAndErosionHeight),
-                                        #  interpolation=cv.INTER_AREA)
+# Resizing High Pass Filtered Image
+invertedBinaryDepthMapImageWithClosingOpeningAndErosionHeight, invertedBinaryDepthMapImageWithClosingOpeningAndErosionWidth = invertedBinaryDepthMapImageWithClosingOpeningAndErosion.shape[:2]
+
+resizedHighPassFilteredImage = cv.resize(highPassFilteredImage, (invertedBinaryDepthMapImageWithClosingOpeningAndErosionWidth, invertedBinaryDepthMapImageWithClosingOpeningAndErosionHeight),interpolation=cv.INTER_AREA)
 # cv.imshow("High Pass Filtered Image after Resize", resizedHighPassFilteredImage)
 
-# maskedHighPassFilteredImage = cv.bitwise_and(resizedHighPassFilteredImage, resizedHighPassFilteredImage,
-                                            #  mask=binaryDepthMapImageWithClosingOpeningAndErosion)
+# Resizing Original Image
+resizedOriginalImage = cv.resize(lightFieldImage, (invertedBinaryDepthMapImageWithClosingOpeningAndErosionWidth, invertedBinaryDepthMapImageWithClosingOpeningAndErosionHeight), interpolation=cv.INTER_AREA)
+cv.imshow("Original Image after Resize", resizedOriginalImage)
 
-# cv.imshow("Resized High Pass Filtered Image after Masking", maskedHighPassFilteredImage)
+# Edge Connect
+# Image Composite
+# Create, Show & Write White Image
+# whiteImage = np.zeros([invertedBinaryDepthMapImageWithClosingOpeningAndErosionHeight,invertedBinaryDepthMapImageWithClosingOpeningAndErosionWidth,3], dtype=np.uint8)
+# whiteImage.fill(255)
+# cv.imwrite('whiteImage.png', whiteImage)
+# cv.imshow('White Image',whiteImage)
 
-# Using cv2.imwrite() method
-# Saving the image
-# cv.imwrite('resizedHighPassFilteredImage_01.png', resizedHighPassFilteredImage)
-# cv.imwrite('binaryDepthMapImageWithClosingOpeningAndErosion_01.png', binaryDepthMapImageWithClosingOpeningAndErosion)
-# cv.imwrite('maskedHighPassFilteredImage_01.png', maskedHighPassFilteredImage)
+# Saving Images - Using cv2.imwrite()
+cv.imwrite('resizedOriginalImage_01.png', resizedOriginalImage)
+cv.imwrite('invertedBinaryDepthMapImageWithClosingOpeningAndErosion_01.png', invertedBinaryDepthMapImageWithClosingOpeningAndErosion)
+
+# Using Pillow
+# White Image
+resizedOriginalImagePillow = Image.open('resizedOriginalImage_01.png')
+whiteImagePillow = Image.new("1", resizedOriginalImagePillow.size, 255)
+# TODO : Bug Fix - Title not showing on image view
+# whiteImagePillow.show(title='White Image Pillow')
+
+# Creating Composite Image
+invertedBinaryDepthMapImageWithClosingOpeningAndErosionPillow = Image.open('invertedBinaryDepthMapImageWithClosingOpeningAndErosion_01.png')
+invertedBinaryDepthMapImageWithClosingOpeningAndErosionPillow.show(title='Inverted Binary Depth Map Image With Closing, Opening And Erosion - Pillow')
+
+compositeImage = Image.composite(whiteImagePillow, resizedOriginalImagePillow, invertedBinaryDepthMapImageWithClosingOpeningAndErosionPillow)
+compositeImage.show(title='Composite Iamge')
+compositeImage.save('compositeImage_01.png')
 
 cv.waitKey(0)
 cv.destroyAllWindows()
