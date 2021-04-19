@@ -3,6 +3,8 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/.ipynb_checkpoints" />
+      <excludeFolder url="file://$MODULE_DIR$/chrome-config" />
+      <excludeFolder url="file://$MODULE_DIR$/pycharm-config" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.7 (Raindrop-Removal-With-Light-Field-Image-Using-Image-Inpainting)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
