@@ -1,20 +1,20 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="edge-connect test" type="PythonConfigurationType" factoryName="Python">
+  <configuration default="false" name="edge-connect compositeImage" type="PythonConfigurationType" factoryName="Python">
     <module name="Raindrop-Removal-With-Light-Field-Image-Using-Image-Inpainting" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
-    <option name="SDK_HOME" value="" />
+    <option name="SDK_HOME" value="$USER_HOME$/.pyenv/versions/anaconda3-2020.11/envs/Raindrop-Removal-With-Light-Field-Image-Using-Image-Inpainting/bin/python" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/edge-connect" />
     <option name="IS_MODULE_SDK" value="false" />
     <option name="ADD_CONTENT_ROOTS" value="true" />
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
     <option name="SCRIPT_NAME" value="$PROJECT_DIR$/edge-connect/test.py" />
-    <option name="PARAMETERS" value="--checkpoints ./checkpoints/places2 --input ./examples/places2/images --mask ./examples/places2/masks --output ./checkpoints/results" />
+    <option name="PARAMETERS" value="--checkpoints ./checkpoints/places2 --input ./compositeImage_01.png --mask ./invertedBinaryDepthMapImageWithClosingOpeningAndErosion_01.png --output ./checkpoints/results" />
     <option name="SHOW_COMMAND_LINE" value="true" />
     <option name="EMULATE_TERMINAL" value="false" />
     <option name="MODULE_MODE" value="false" />
-    <option name="REDIRECT_INPUT" value="false" />z
+    <option name="REDIRECT_INPUT" value="false" />
     <option name="INPUT_FILE" value="" />
     <method v="2" />
   </configuration>
