@@ -3,6 +3,6 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/derainnet" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/edge-connect" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/edge_connect" vcs="Git" />
   </component>
 </project>

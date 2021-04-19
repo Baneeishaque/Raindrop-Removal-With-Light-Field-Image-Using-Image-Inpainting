@@ -1,6 +1,6 @@
-[submodule "edge-connect"]
-	path = edge-connect
-	url = https://github.com/Baneeishaque/edge-connect.git
 [submodule "derainnet"]
 	path = derainnet
 	url = https://github.com/Baneeishaque/attentive-gan-derainnet.git
+[submodule "edge_connect"]
+	path = edge_connect
+	url = https://github.com/Baneeishaque/edge-connect.git

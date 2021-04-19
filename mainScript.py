@@ -3,8 +3,13 @@ import numpy
 from scipy import ndimage
 from PIL import Image
 from derainnet import test_model
+import os
+from shutil import copyfile
+import random
+import torch
+from edge_connect.src.config import Config
+from edge_connect.src.edge_connect import EdgeConnect
 
-# from derainnet.test_model import test_model
 
 # Processing Depth Map Image file
 # Read the depth map image file
@@ -98,11 +103,61 @@ invertedBinaryDepthMapImageWithClosingOpeningAndErosionPillow.show(
 
 compositeImage = Image.composite(whiteImagePillow, resizedOriginalImagePillow,
                                  invertedBinaryDepthMapImageWithClosingOpeningAndErosionPillow)
-compositeImage.show(title='Composite Image')
+# compositeImage.show(title='Composite Image')
 compositeImage.save('compositeImage_01.png')
 
 # Using derainnet
 test_model.test_model(image_path='img_01.png', weights_path='derainnet/model/derain_gan/derain_gan.ckpt-100000')
+deRainNetResult = cv2.imread('derain_ret.png')
+cv2.imshow('DeRainNet Result', deRainNetResult)
+
+# Edge Connect
+# Default Config. on places2
+places2CheckPointsPath = './edge_connect/checkpoints/places2'
+config_path = os.path.join(places2CheckPointsPath, 'config.yml')
+# create checkpoints path if doesn't exist
+if not os.path.exists(places2CheckPointsPath):
+    os.makedirs(places2CheckPointsPath)
+copyfile('./edge_connect/config.yml.example', config_path)
+# load config file
+config = Config(config_path)
+
+config.MODE = 2
+config.MODEL = 3
+config.INPUT_SIZE = 0
+
+config.TEST_FLIST = './compositeImage_01.png'
+config.TEST_MASK_FLIST = './invertedBinaryDepthMapImageWithClosingOpeningAndErosion_01.png'
+config.RESULTS = './edge_connect/checkpoints/results'
+
+# cuda visible devices
+os.environ['CUDA_VISIBLE_DEVICES'] = ','.join(str(e) for e in config.GPU)
+
+# init device
+if torch.cuda.is_available():
+    config.DEVICE = torch.device("cuda")
+    torch.backends.cudnn.benchmark = True  # cudnn auto-tuner
+else:
+    config.DEVICE = torch.device("cpu")
+
+# set cv2 running threads to 1 (prevents deadlocks with pytorch dataloader)
+cv2.setNumThreads(0)
+
+# initialize random seed
+torch.manual_seed(config.SEED)
+torch.cuda.manual_seed_all(config.SEED)
+numpy.random.seed(config.SEED)
+random.seed(config.SEED)
+
+# build the model and initialize
+model = EdgeConnect(config)
+model.load()
+
+print('\nstart testing...\n')
+model.test()
+
+edgeConnectResult = cv2.imread('./edge_connect/checkpoints/results/compositeImage_01.png')
+cv2.imshow('Edge Connect Result', edgeConnectResult)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
