@@ -1,3 +1,5 @@
+# Anaconda3-2020.11
+
 trigger:
 - main
 
@@ -14,6 +16,8 @@ pool:
   vmImage: $(imageName)
 
 variables:
+  ANACONDA_VERSION: 3-2020.11
+  TIMESTAMP: 28 Apr. 2021
   CONDA_CACHE_DIR: $(Pipeline.Workspace)/.condarc
 
 steps:
@@ -36,17 +40,25 @@ steps:
   - task: Cache@2
     displayName: Use cached Anaconda environment
     inputs:
-      key: 'conda | "$(Agent.OS)" | environment.yml'
+      key: 'conda | $(ANACONDA_VERSION) | $(TIMESTAMP) | "$(Agent.OS)" | environment.yml'
       restoreKeys: | 
         python | "$(Agent.OS)"
         python
       path: $(CONDA_CACHE_DIR)
       cacheHitVar: CONDA_CACHE_RESTORED
 
+  - script: conda config --set channel_priority strict
+    displayName: Set Channel Priority to Strict on Anaconda environment
+    condition: eq(variables.CONDA_CACHE_RESTORED, 'false')
+
+  - script: conda update -y --all
+    displayName: Update Anaconda environment
+    condition: eq(variables.CONDA_CACHE_RESTORED, 'false')
+
   - script: conda env create --file environment.yml
     displayName: Create Anaconda environment
     condition: eq(variables.CONDA_CACHE_RESTORED, 'false')
-    
+
   - script: |
       conda activate Raindrop-Removal-With-Light-Field-Image-Using-Image-Inpainting
       # python mainScript.py
