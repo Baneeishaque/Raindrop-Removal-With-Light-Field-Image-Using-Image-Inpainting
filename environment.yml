@@ -2,19 +2,17 @@ name: Raindrop-Removal-With-Light-Field-Image-Using-Image-Inpainting
 channels:
   - defaults
   - conda-forge
-  - pytorch
-  - intel
 dependencies:
   - python=3.7
   - scipy=1.2.1
-  - opencv
+  - opencv=4.5.1
   - torchvision
   - pyaml
   - scikit-image=0.17.1
   - jupyterlab
   - pillow
   - pylint
-  - tensorflow=1.15.2
+  - tensorflow=1.15.0
   - glog
   - easydict
   - matplotlib

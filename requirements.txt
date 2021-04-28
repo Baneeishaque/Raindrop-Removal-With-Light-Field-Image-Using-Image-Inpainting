@@ -1,9 +1,9 @@
 scipy==1.2.1
-tensorflow==1.15.2
-opencv-python
+scikit-image==0.17.1
+tensorflow==1.15.0
+opencv-python=4.5.1
 torchvision
 pyyaml
-scikit-image
 jupyterlab
 pillow
 pylint
