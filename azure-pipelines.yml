@@ -16,8 +16,8 @@ pool:
   vmImage: $(imageName)
 
 variables:
-  ANACONDA_VERSION: 3-2020.11
-  TIME_STAMP: 28 Apr. 2021
+  ANACONDA_VERSION: "3-2020.11"
+  TIME_STAMP: "28 Apr. 2021"
   CONDA_CACHE_DIR: $(Pipeline.Workspace)/.condarc
 
 steps:
