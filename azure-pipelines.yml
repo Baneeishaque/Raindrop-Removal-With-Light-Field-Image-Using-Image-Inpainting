@@ -17,7 +17,7 @@ pool:
 
 variables:
   ANACONDA_VERSION: 3-2020.11
-  TIMESTAMP: 28 Apr. 2021
+  TIME_STAMP: 28 Apr. 2021
   CONDA_CACHE_DIR: $(Pipeline.Workspace)/.condarc
 
 steps:
@@ -40,7 +40,7 @@ steps:
   - task: Cache@2
     displayName: Use cached Anaconda environment
     inputs:
-      key: 'conda | $(ANACONDA_VERSION) | $(TIMESTAMP) | "$(Agent.OS)" | environment.yml'
+      key: 'conda | $(ANACONDA_VERSION) | $(TIME_STAMP) | "$(Agent.OS)" | environment.yml'
       restoreKeys: | 
         python | "$(Agent.OS)"
         python
