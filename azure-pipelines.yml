@@ -62,4 +62,13 @@ steps:
   - script: |
       conda activate Raindrop-Removal-With-Light-Field-Image-Using-Image-Inpainting
       # python mainScript.py
-    displayName: Run mainScript.py
+    displayName: Run test.py on Windows
+    condition: eq( variables['Agent.OS'], 'Windows_NT' )
+
+  - script: |
+      conda init bash
+      conda activate Raindrop-Removal-With-Light-Field-Image-Using-Image-Inpainting
+      # python mainScript.py
+    displayName: Run test.py on Unix
+    condition: ne( variables['Agent.OS'], 'Windows_NT' )
+    
