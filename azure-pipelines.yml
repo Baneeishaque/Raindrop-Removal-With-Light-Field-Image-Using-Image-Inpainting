@@ -47,9 +47,9 @@ steps:
       path: $(CONDA_CACHE_DIR)
       cacheHitVar: CONDA_CACHE_RESTORED
 
-  - script: conda config --set channel_priority strict
-    displayName: Set Channel Priority to Strict on Anaconda environment
-    condition: eq(variables.CONDA_CACHE_RESTORED, 'false')
+#   - script: conda config --set channel_priority strict
+#     displayName: Set Channel Priority to Strict on Anaconda environment
+#     condition: eq(variables.CONDA_CACHE_RESTORED, 'false')
 
   - script: conda update -y --all
     displayName: Update Anaconda environment
