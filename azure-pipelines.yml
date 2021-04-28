@@ -13,24 +13,41 @@ strategy:
 pool:
   vmImage: $(imageName)
 
+variables:
+  CONDA_CACHE_DIR: $(Pipeline.Workspace)/.condarc
+
 steps:
-- powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
-  condition: eq( variables['Agent.OS'], 'Windows_NT' )
-  displayName: Add conda to PATH On Windows
+  - checkout: self
+    submodules: recursive
+  
+  - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
+    condition: eq( variables['Agent.OS'], 'Windows_NT' )
+    displayName: Add conda to PATH On Windows
 
-- bash: echo "##vso[task.prependpath]$CONDA/bin"
-  condition: ne( variables['Agent.OS'], 'Windows_NT' )
-  displayName: Add conda to PATH On Unix
+  - bash: echo "##vso[task.prependpath]$CONDA/bin"
+    condition: ne( variables['Agent.OS'], 'Windows_NT' )
+    displayName: Add conda to PATH On Unix
 
-# On Hosted macOS, the agent user doesn't have ownership of Miniconda's installation directory. We need to take ownership if we want to update conda or install packages globally.
-- bash: sudo chown -R $USER $CONDA
-  condition: eq( variables['Agent.OS'], 'Darwin' )
-  displayName: Take ownership of conda installation on macOS
+  # On Hosted macOS, the agent user doesn't have ownership of Miniconda's installation directory. We need to take ownership if we want to update conda or install packages globally.
+  - bash: sudo chown -R $USER $CONDA
+    condition: eq( variables['Agent.OS'], 'Darwin' )
+    displayName: Take ownership of conda installation on macOS
 
-- script: conda env create --file environment.yml
-  displayName: Create Anaconda environment
+  - task: Cache@2
+    displayName: Use cached Anaconda environment
+    inputs:
+      key: 'conda | "$(Agent.OS)" | environment.yml'
+      restoreKeys: | 
+        python | "$(Agent.OS)"
+        python
+      path: $(CONDA_CACHE_DIR)
+      cacheHitVar: CONDA_CACHE_RESTORED
 
-- script: |
-    conda activate Raindrop-Removal-With-Light-Field-Image-Using-Image-Inpainting
-    # python mainScript.py
-  displayName: Run mainScript.py
+  - script: conda env create --file environment.yml
+    displayName: Create Anaconda environment
+    condition: eq(variables.CONDA_CACHE_RESTORED, 'false')
+    
+  - script: |
+      conda activate Raindrop-Removal-With-Light-Field-Image-Using-Image-Inpainting
+      # python mainScript.py
+    displayName: Run mainScript.py
