@@ -1,0 +1,36 @@
+trigger:
+- main
+
+strategy:
+  matrix:
+    linux:
+      imageName: 'ubuntu-latest'
+    mac:
+      imageName: 'macOS-latest'
+    windows:
+      imageName: 'windows-latest'
+
+pool:
+  vmImage: $(imageName)
+
+steps:
+- powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
+  condition: eq( variables['Agent.OS'], 'Windows_NT' )
+  displayName: Add conda to PATH On Windows
+
+- bash: echo "##vso[task.prependpath]$CONDA/bin"
+  condition: ne( variables['Agent.OS'], 'Windows_NT' )
+  displayName: Add conda to PATH On Unix
+
+# On Hosted macOS, the agent user doesn't have ownership of Miniconda's installation directory. We need to take ownership if we want to update conda or install packages globally.
+- bash: sudo chown -R $USER $CONDA
+  condition: eq( variables['Agent.OS'], 'Darwin' )
+  displayName: Take ownership of conda installation on macOS
+
+- script: conda env create --file environment.yml
+  displayName: Create Anaconda environment
+
+- script: |
+    conda activate Raindrop-Removal-With-Light-Field-Image-Using-Image-Inpainting
+    # python mainScript.py
+  displayName: Run mainScript.py
