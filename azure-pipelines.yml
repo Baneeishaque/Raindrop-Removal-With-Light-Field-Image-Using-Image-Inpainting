@@ -59,20 +59,19 @@ steps:
     displayName: Create Anaconda environment
 #     condition: eq(variables.CONDA_CACHE_RESTORED, 'false')
 
-  - script: conda init cmd.exe
-    displayName: Configure shell for Anaconda environment on Windows
-    condition: eq( variables['Agent.OS'], 'Windows_NT' )
+#   - script: conda init cmd.exe
+#     displayName: Configure shell for Anaconda environment on Windows
+#     condition: eq( variables['Agent.OS'], 'Windows_NT' )
     
-  - script: |
-      conda activate Raindrop-Removal-With-Light-Field-Image-Using-Image-Inpainting
-      # python mainScript.py
-    displayName: Run mainScript.py on Windows
-    condition: eq( variables['Agent.OS'], 'Windows_NT' )
+#   - script: |
+#       conda activate Raindrop-Removal-With-Light-Field-Image-Using-Image-Inpainting
+#       # python mainScript.py
+#     displayName: Run mainScript.py on Windows
+#     condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
-  - script: |
+  - bash: |
       eval "$(conda shell.bash hook)"
       conda activate Raindrop-Removal-With-Light-Field-Image-Using-Image-Inpainting
       # python mainScript.py
-    displayName: Run mainScript.py on Unix
-    condition: ne( variables['Agent.OS'], 'Windows_NT' )
-    
+    displayName: Run mainScript.py
+#    condition: ne( variables['Agent.OS'], 'Windows_NT' )
