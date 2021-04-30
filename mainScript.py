@@ -1,15 +1,18 @@
+import os
+import random
+from shutil import copyfile
+
 import cv2
 import numpy
-from scipy import ndimage
-from PIL import Image
-from derainnet import test_model
-import os
-from shutil import copyfile
-import random
 import torch
+from PIL import Image
+from scipy import ndimage
+
+from derainnet import test_model
 from edge_connect.src.config import Config
 from edge_connect.src.edge_connect import EdgeConnect
 
+os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 
 # Processing Depth Map Image file
 # Read the depth map image file
