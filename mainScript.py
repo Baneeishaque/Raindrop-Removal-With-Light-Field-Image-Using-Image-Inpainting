@@ -22,25 +22,31 @@ depthMapImage = cv2.imread('depth_01.png', cv2.IMREAD_ANYDEPTH)
 ret, invertedBinaryDepthMapImage = cv2.threshold(depthMapImage, 127, 255, cv2.THRESH_BINARY_INV)
 
 # Show the image with opencv
-# cv.imshow("Original Depth Map Image", depthMapImage)
-# cv.imshow("Binary Image of Depth Map Image", invertedBinaryDepthMapImage)
+# cv2.imshow("Original Depth Map Image", depthMapImage)
+cv2.imwrite('originalDepthMapImage_01.png', depthMapImage)
+# cv2.imshow("Binary Image of Depth Map Image", invertedBinaryDepthMapImage)
+cv2.imwrite('invertedBinaryDepthMapImage_01.png', invertedBinaryDepthMapImage)
 
 # Closing operation on Inverted Binary Image of Depth Map Image
 kernel = numpy.ones((5, 5), numpy.uint8)
 invertedBinaryDepthMapImageWithClosing = cv2.morphologyEx(invertedBinaryDepthMapImage, cv2.MORPH_CLOSE, kernel)
-# cv.imshow("Inverted Binary Image of Depth Map after Closing", invertedBinaryDepthMapImageWithClosing)
+# cv2.imshow("Inverted Binary Image of Depth Map after Closing", invertedBinaryDepthMapImageWithClosing)
+cv2.imwrite('invertedBinaryDepthMapImageWithClosing_01.png', invertedBinaryDepthMapImageWithClosing)
 
 # Opening Operation on Inverted Binary Image of Depth Map Image
 invertedBinaryDepthMapImageWithClosingAndOpening = cv2.morphologyEx(invertedBinaryDepthMapImageWithClosing,
                                                                     cv2.MORPH_OPEN, kernel)
-# cv.imshow("Inverted Binary Image of Depth Map after Closing & Opening",
-# invertedBinaryDepthMapImageWithClosingAndOpening)
+# cv2.imshow("Inverted Binary Image of Depth Map after Closing & Opening",
+#            invertedBinaryDepthMapImageWithClosingAndOpening)
+cv2.imwrite('invertedBinaryDepthMapImageWithClosingAndOpening_01.png', invertedBinaryDepthMapImageWithClosingAndOpening)
 
 # Erosion Operation on Inverted Binary Image of Depth Map Image
 invertedBinaryDepthMapImageWithClosingOpeningAndErosion = cv2.erode(invertedBinaryDepthMapImageWithClosingAndOpening,
                                                                     kernel, iterations=1)
-# cv.imshow("Inverted Binary Image of Depth Map after Closing, Opening & Erosion",
-# invertedBinaryDepthMapImageWithClosingOpeningAndErosion)
+# cv2.imshow("Inverted Binary Image of Depth Map after Closing, Opening & Erosion",
+#            invertedBinaryDepthMapImageWithClosingOpeningAndErosion)
+cv2.imwrite('invertedBinaryDepthMapImageWithClosingOpeningAndErosion_01.png',
+            invertedBinaryDepthMapImageWithClosingAndOpening)
 
 # Processing Original Image
 lightFieldImage = cv2.imread('img_01.png')
@@ -67,8 +73,7 @@ highPassFilteredImage = highPassFilteredImage.squeeze()
 # cv.imshow("High Pass Filtered Image", highPassFilteredImage)
 
 # Resizing High Pass Filtered Image
-invertedBinaryDepthMapImageWithClosingOpeningAndErosionHeight, invertedBinaryDepthMapImageWithClosingOpeningAndErosionWidth = invertedBinaryDepthMapImageWithClosingOpeningAndErosion.shape[
-                                                                                                                              :2]
+invertedBinaryDepthMapImageWithClosingOpeningAndErosionHeight, invertedBinaryDepthMapImageWithClosingOpeningAndErosionWidth = invertedBinaryDepthMapImageWithClosingOpeningAndErosion.shape[:2]
 
 resizedHighPassFilteredImage = cv2.resize(highPassFilteredImage, (
     invertedBinaryDepthMapImageWithClosingOpeningAndErosionWidth,
