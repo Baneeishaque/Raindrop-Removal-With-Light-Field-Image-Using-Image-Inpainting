@@ -56,12 +56,12 @@ highPassFilter = numpy.array([[0, -1, 0],
                               [-1, 5, -1],
                               [0, -1, 1]])
 
-print("Shape of Original Image", lightFieldImage.shape)
-print("Shape of High Pass Filter", highPassFilter.shape)
+# print("Shape of Original Image", lightFieldImage.shape)
+# print("Shape of High Pass Filter", highPassFilter.shape)
 
 # Add singleton dimension to High Pass Filter
 highPassFilter = highPassFilter[:, :, None]
-print("Shape of High Pass Filter", highPassFilter.shape)
+# print("Shape of High Pass Filter", highPassFilter.shape)
 
 # Apply High Pass Filter
 highPassFilteredImage = ndimage.convolve(lightFieldImage, highPassFilter)
@@ -69,7 +69,7 @@ highPassFilteredImage = ndimage.convolve(lightFieldImage, highPassFilter)
 # Remove singleton dimension
 highPassFilteredImage = highPassFilteredImage.squeeze()
 
-# cv2.imshow("Original Image", lightFieldImage)
+cv2.imshow("Original Image", lightFieldImage)
 # cv2.imshow("High Pass Filtered Image", highPassFilteredImage)
 cv2.imwrite('highPassFilteredImage_01.png', highPassFilteredImage)
 
@@ -93,7 +93,7 @@ cv2.imwrite('resizedOriginalImage_01.png', resizedOriginalImage)
 whiteImage = numpy.zeros([invertedBinaryDepthMapImageWithClosingOpeningAndErosionHeight, invertedBinaryDepthMapImageWithClosingOpeningAndErosionWidth,3], dtype=numpy.uint8)
 whiteImage.fill(255) 
 cv2.imwrite('whiteImage.png', whiteImage) 
-cv2.imshow('White Image',whiteImage)
+# cv2.imshow('White Image',whiteImage)
 
 # Using Pillow
 # White Image

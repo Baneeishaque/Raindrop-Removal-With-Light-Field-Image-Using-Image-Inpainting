@@ -470,3 +470,6 @@ whiteImage.png
 /invertedBinaryDepthMapImageWithClosingAndOpening_01.png
 /invertedBinaryDepthMapImageWithClosing_01.png
 /invertedBinaryDepthMapImage_01.png
+/highPassFilteredImage_01.png
+/resizedHighPassFilteredImage_01.png
+/whiteImagePillow_01.png
