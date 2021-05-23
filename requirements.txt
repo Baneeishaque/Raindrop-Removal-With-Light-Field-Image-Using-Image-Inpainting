@@ -11,4 +11,5 @@ easydict
 matplotlib
 numpy
 google-cloud-vision
+azure-cognitiveservices-vision-computervision
 pylint

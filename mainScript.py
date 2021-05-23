@@ -14,10 +14,8 @@ from derainnet import test_model
 from edge_connect.src.config import Config
 from edge_connect.src.edge_connect import EdgeConnect
 
-import io
-
-# Imports the Google Cloud client library
-from google.cloud import vision
+import GoogleVisionApi
+import AzureComputerVision
 
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 
@@ -177,23 +175,12 @@ cv2.imshow('Edge Connect Result', edgeConnectResult)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
-# Google Vision API
-# Instantiates a client
-client = vision.ImageAnnotatorClient()
+# print('\n=== Google Cloud Vision API Results : Original Image ===')
+# GoogleVisionApi.testGoogleVisionApi('./img_01.png')
+# print('\n=== Google Cloud Vision API Results : Derained Image')
+# GoogleVisionApi.testGoogleVisionApi('./edge_connect/checkpoints/results/compositeImage_01.png')
 
-# The name of the image file to annotate
-file_name = './edge_connect/checkpoints/results/compositeImage_01.png'
-
-# Loads the image into memory
-with io.open(file_name, 'rb') as image_file:
-    content = image_file.read()
-
-image = vision.Image(content=content)
-
-# Performs label detection on the image file
-response = client.label_detection(image=image)
-labels = response.label_annotations
-
-print('Labels:')
-for label in labels:
-    print(label.description)
+print('\n=== Azure Computer Vision Image Analysis Results : Original Image ===')
+AzureComputerVision.testAzureComputerVisionImageAnalysisOnLocalImage("img_01.png")
+print('\n=== Azure Computer Vision Image Analysis Results : Derained Image ===')
+AzureComputerVision.testAzureComputerVisionImageAnalysisOnLocalImage("edge_connect/checkpoints/results/compositeImage_01.png")

@@ -1,15 +1,6 @@
-
 from azure.cognitiveservices.vision.computervision import ComputerVisionClient
-from azure.cognitiveservices.vision.computervision.models import OperationStatusCodes
 from azure.cognitiveservices.vision.computervision.models import VisualFeatureTypes
 from msrest.authentication import CognitiveServicesCredentials
-
-from array import array
-import os
-from PIL import Image
-import sys
-import time
-
 
 def initializeComputerVision():
     '''
@@ -93,8 +84,8 @@ def testAzureComputerVisionImageAnalysis():
         print("No objects detected.")
     else:
         for object in detect_objects_results_remote.objects:
-            print("object at location {}, {}, {}, {}".format( \
-            object.rectangle.x, object.rectangle.x + object.rectangle.w, \
+            print("object {} at location {}, {}, {}, {}".format( \
+            object.object_property,object.rectangle.x, object.rectangle.x + object.rectangle.w, \
             object.rectangle.y, object.rectangle.y + object.rectangle.h))
 
     '''
@@ -205,33 +196,33 @@ def testAzureComputerVisionImageAnalysis():
         for landmark in detect_domain_results_landmarks.result["landmarks"]:
             print(landmark["name"])
 
-    '''
-    Detect Image Types - remote
-    This example detects an image's type (clip art/line drawing).
-    '''
-    print("===== Detect Image Types - remote =====")
-    # Get URL of an image with a type
-    remote_image_url_type = "https://raw.githubusercontent.com/Azure-Samples/cognitive-services-sample-data-files/master/ComputerVision/Images/type-image.jpg"
-    # Select visual feature(s) you want
-    remote_image_features = [VisualFeatureTypes.image_type]
-    # Call API with URL and features
-    detect_type_results_remote = computervision_client.analyze_image(remote_image_url_type, remote_image_features)
+    # '''
+    # Detect Image Types - remote
+    # This example detects an image's type (clip art/line drawing).
+    # '''
+    # print("===== Detect Image Types - remote =====")
+    # # Get URL of an image with a type
+    # remote_image_url_type = "https://raw.githubusercontent.com/Azure-Samples/cognitive-services-sample-data-files/master/ComputerVision/Images/type-image.jpg"
+    # # Select visual feature(s) you want
+    # remote_image_features = [VisualFeatureTypes.image_type]
+    # # Call API with URL and features
+    # detect_type_results_remote = computervision_client.analyze_image(remote_image_url_type, remote_image_features)
 
-    # Prints type results with degree of accuracy
-    print("Type of remote image:")
-    if detect_type_results_remote.image_type.clip_art_type == 0:
-        print("Image is not clip art.")
-    elif detect_type_results_remote.image_type.line_drawing_type == 1:
-        print("Image is ambiguously clip art.")
-    elif detect_type_results_remote.image_type.line_drawing_type == 2:
-        print("Image is normal clip art.")
-    else:
-        print("Image is good clip art.")
+    # # Prints type results with degree of accuracy
+    # print("Type of remote image:")
+    # if detect_type_results_remote.image_type.clip_art_type == 0:
+    #     print("Image is not clip art.")
+    # elif detect_type_results_remote.image_type.line_drawing_type == 1:
+    #     print("Image is ambiguously clip art.")
+    # elif detect_type_results_remote.image_type.line_drawing_type == 2:
+    #     print("Image is normal clip art.")
+    # else:
+    #     print("Image is good clip art.")
 
-    if detect_type_results_remote.image_type.line_drawing_type == 0:
-        print("Image is not a line drawing.")
-    else:
-        print("Image is a line drawing")
+    # if detect_type_results_remote.image_type.line_drawing_type == 0:
+    #     print("Image is not a line drawing.")
+    # else:
+    #     print("Image is a line drawing")
 
 
 def testAzureComputerVisionOCR():
@@ -268,4 +259,219 @@ def testAzureComputerVisionOCR():
                 print(line.text)
                 print(line.bounding_box)
     print()
+
+def testAzureComputerVisionImageAnalysisOnLocalImage(imageFile):
+    computervision_client = initializeComputerVision()
+        
+    '''
+    Describe an Image - local
+    This example describes the contents of an image with the confidence score.
+    '''
+    localImage = open(imageFile,"rb")
+    print("===== Describe an image - local =====")
+    # Call API
+    description_results = computervision_client.describe_image_in_stream(localImage)
+
+    # Get the captions (descriptions) from the response, with confidence level
+    print("Description of local image: ")
+    if (len(description_results.captions) == 0):
+        print("No description detected.")
+    else:
+        for caption in description_results.captions:
+            print("'{}' with confidence {:.2f}%".format(caption.text, caption.confidence * 100))
+
+    '''
+    Categorize an Image - local
+    This example extracts (general) categories from a local image with a confidence score.
+    '''
+    localImage = open(imageFile,"rb")
+    print("===== Categorize an image - local =====")
+    # Select the visual feature(s) you want.
+    local_image_features = ["categories"]
+    # Call API with URL and features
+    categorize_results_local = computervision_client.analyze_image_in_stream(localImage , local_image_features)
+
+    # Print results with confidence score
+    print("Categories from local image: ")
+    if (len(categorize_results_local.categories) == 0):
+        print("No categories detected.")
+    else:
+        for category in categorize_results_local.categories:
+            print("'{}' with confidence {:.2f}%".format(category.name, category.score * 100))    
+
+    '''
+    Tag an Image - local
+    This example returns a tag (key word) for each thing in the image.
+    '''
+    localImage = open(imageFile,"rb")
+    print("===== Tag an image - local =====")
+    # Call API with local image
+    tags_result_local = computervision_client.tag_image_in_stream(localImage)
+
+    # Print results with confidence score
+    print("Tags in the local image: ")
+    if (len(tags_result_local.tags) == 0):
+        print("No tags detected.")
+    else:
+        for tag in tags_result_local.tags:
+            print("'{}' with confidence {:.2f}%".format(tag.name, tag.confidence * 100))
+
+    '''
+    Detect Objects - local
+    This example detects different kinds of objects with bounding boxes in a local image.
+    '''
+    print("===== Detect Objects - local =====")
+    # Get local image with different objects
+    local_image_of_objects = open(imageFile,"rb")
+    # Call API with local Image
+    detect_objects_results_local = computervision_client.detect_objects_in_stream(local_image_of_objects)
+
+    # Print detected objects results with bounding boxes
+    print("Detecting objects in local image:")
+    if len(detect_objects_results_local.objects) == 0:
+        print("No objects detected.")
+    else:
+        for object in detect_objects_results_local.objects:
+            print("object {} at location {}, {}, {}, {}".format( \
+            object.object_property,object.rectangle.x, object.rectangle.x + object.rectangle.w, \
+            object.rectangle.y, object.rectangle.y + object.rectangle.h))
+
+    '''
+    Detect Brands - local
+    This example detects common brands like logos and puts a bounding box around them.
+    '''
+    print("===== Detect Brands - local =====")
+    # Get a local image with a brand logo
+    local_image_with_brands = open(imageFile,"rb")
+    # Select the visual feature(s) you want
+    local_image_features = ["brands"]
+    # Call API with image and features
+    detect_brands_results_local = computervision_client.analyze_image_in_stream(local_image_with_brands, local_image_features)
+
+    print("Detecting brands in local image: ")
+    if len(detect_brands_results_local.brands) == 0:
+        print("No brands detected.")
+    else:
+        for brand in detect_brands_results_local.brands:
+            print("'{}' brand detected with confidence {:.1f}% at location {}, {}, {}, {}".format( \
+            brand.name, brand.confidence * 100, brand.rectangle.x, brand.rectangle.x + brand.rectangle.w, \
+            brand.rectangle.y, brand.rectangle.y + brand.rectangle.h))
+
+    '''
+    Detect Faces - local
+    This example detects faces in a local image, gets their gender and age, 
+    and marks them with a bounding box.
+    '''
+    print("===== Detect Faces - local =====")
+    # Get an image with faces
+    local_image_with_faces = open(imageFile,"rb")
+    # Select the visual feature(s) you want.
+    local_image_features = ["faces"]
+    # Call the API with image and features
+    detect_faces_results_local = computervision_client.analyze_image_in_stream(local_image_with_faces, local_image_features)
+
+    # Print the results with gender, age, and bounding box
+    print("Faces in the local image: ")
+    if (len(detect_faces_results_local.faces) == 0):
+        print("No faces detected.")
+    else:
+        for face in detect_faces_results_local.faces:
+            print("'{}' of age {} at location {}, {}, {}, {}".format(face.gender, face.age, \
+            face.face_rectangle.left, face.face_rectangle.top, \
+            face.face_rectangle.left + face.face_rectangle.width, \
+            face.face_rectangle.top + face.face_rectangle.height))
+        
+    '''
+    Detect Adult or Racy Content - local
+    This example detects adult or racy content in a local image, then prints the adult/racy score.
+    The score is ranged 0.0 - 1.0 with smaller numbers indicating negative results.
+    '''
+    local_image_with_brands = open(imageFile,"rb")
+    print("===== Detect Adult or Racy Content - local =====")
+    # Select the visual feature(s) you want
+    local_image_features = ["adult"]
+    # Call API with image and features
+    detect_adult_results_local = computervision_client.analyze_image_in_stream(local_image_with_brands, local_image_features)
+
+    # Print results with adult/racy score
+    print("Analyzing local image for adult or racy content ... ")
+    print("Is adult content: {} with confidence {:.2f}".format(detect_adult_results_local.adult.is_adult_content, detect_adult_results_local.adult.adult_score * 100))
+    print("Has racy content: {} with confidence {:.2f}".format(detect_adult_results_local.adult.is_racy_content, detect_adult_results_local.adult.racy_score * 100))
+
+    # '''
+    # Detect Color - local
+    # This example detects the different aspects of its color scheme in a local image.
+    # '''
+    # local_image_with_brands = open(imageFile,"rb")
+    # print("===== Detect Color - local =====")
+    # # Select the feature(s) you want
+    # local_image_features = ["color"]
+    # # Call API with image and features
+    # detect_color_results_local = computervision_client.analyze_image_in_stream(local_image_with_brands, local_image_features)
+
+    # # Print results of color scheme
+    # print("Getting color scheme of the local image: ")
+    # print("Is black and white: {}".format(detect_color_results_local.color.is_bw_img))
+    # print("Accent color: {}".format(detect_color_results_local.color.accent_color))
+    # print("Dominant background color: {}".format(detect_color_results_local.color.dominant_color_background))
+    # print("Dominant foreground color: {}".format(detect_color_results_local.color.dominant_color_foreground))
+    # print("Dominant colors: {}".format(detect_color_results_local.color.dominant_colors))
+
+    '''
+    Detect Domain-specific Content - local
+    This example detects celebrites and landmarks in local images.
+    '''
+    local_image_with_faces = open(imageFile,"rb")
+    local_image_with_brands = open(imageFile,"rb")
+    print("===== Detect Domain-specific Content - local =====")
+    # Image of one or more celebrities : faces.jpg
+    # Call API with content type (celebrities) and image
+    detect_domain_results_celebs_local = computervision_client.analyze_image_by_domain_in_stream("celebrities", local_image_with_faces)
+
+    # Print detection results with name
+    print("Celebrities in the local image:")
+    if len(detect_domain_results_celebs_local.result["celebrities"]) == 0:
+        print("No celebrities detected.")
+    else:
+        for celeb in detect_domain_results_celebs_local.result["celebrities"]:
+            print(celeb["name"])
+    
+    # Call API with content type (landmarks) and image
+    detect_domain_results_landmarks = computervision_client.analyze_image_by_domain_in_stream("landmarks", local_image_with_brands)
+    print()
+
+    print("Landmarks in the local image:")
+    if len(detect_domain_results_landmarks.result["landmarks"]) == 0:
+        print("No landmarks detected.")
+    else:
+        for landmark in detect_domain_results_landmarks.result["landmarks"]:
+            print(landmark["name"])
+
+    # '''
+    # Detect Image Types - local
+    # This example detects an image's type (clip art/line drawing).
+    # '''
+    # print("===== Detect Image Types - local =====")
+    # # Get image with a type
+    # local_image_with_type = open(imageFile,"rb")
+    # # Select visual feature(s) you want
+    # local_image_features = [VisualFeatureTypes.image_type]
+    # # Call API with image and features
+    # detect_type_results_local = computervision_client.analyze_image_in_stream(local_image_with_type, local_image_features)
+
+    # # Prints type results with degree of accuracy
+    # print("Type of local image:")
+    # if detect_type_results_local.image_type.clip_art_type == 0:
+    #     print("Image is not clip art.")
+    # elif detect_type_results_local.image_type.line_drawing_type == 1:
+    #     print("Image is ambiguously clip art.")
+    # elif detect_type_results_local.image_type.line_drawing_type == 2:
+    #     print("Image is normal clip art.")
+    # else:
+    #     print("Image is good clip art.")
+
+    # if detect_type_results_local.image_type.line_drawing_type == 0:
+    #     print("Image is not a line drawing.")
+    # else:
+    #     print("Image is a line drawing")
 
