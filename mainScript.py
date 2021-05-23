@@ -69,8 +69,9 @@ highPassFilteredImage = ndimage.convolve(lightFieldImage, highPassFilter)
 # Remove singleton dimension
 highPassFilteredImage = highPassFilteredImage.squeeze()
 
-# cv.imshow("Original Image", lightFieldImage)
-# cv.imshow("High Pass Filtered Image", highPassFilteredImage)
+# cv2.imshow("Original Image", lightFieldImage)
+# cv2.imshow("High Pass Filtered Image", highPassFilteredImage)
+cv2.imwrite('highPassFilteredImage_01.png', highPassFilteredImage)
 
 # Resizing High Pass Filtered Image
 invertedBinaryDepthMapImageWithClosingOpeningAndErosionHeight, invertedBinaryDepthMapImageWithClosingOpeningAndErosionWidth = invertedBinaryDepthMapImageWithClosingOpeningAndErosion.shape[:2]
@@ -78,36 +79,35 @@ invertedBinaryDepthMapImageWithClosingOpeningAndErosionHeight, invertedBinaryDep
 resizedHighPassFilteredImage = cv2.resize(highPassFilteredImage, (
     invertedBinaryDepthMapImageWithClosingOpeningAndErosionWidth,
     invertedBinaryDepthMapImageWithClosingOpeningAndErosionHeight), interpolation=cv2.INTER_AREA)
-# cv.imshow("High Pass Filtered Image after Resize", resizedHighPassFilteredImage)
+# cv2.imshow("High Pass Filtered Image after Resize", resizedHighPassFilteredImage)
+cv2.imwrite('resizedHighPassFilteredImage_01.png', resizedHighPassFilteredImage)
 
 # Resizing Original Image
 resizedOriginalImage = cv2.resize(lightFieldImage, (invertedBinaryDepthMapImageWithClosingOpeningAndErosionWidth,
                                                     invertedBinaryDepthMapImageWithClosingOpeningAndErosionHeight),
                                   interpolation=cv2.INTER_AREA)
-cv2.imshow("Original Image after Resize", resizedOriginalImage)
-
-# Edge Connect Image Composite Create, Show & Write White Image whiteImage = np.zeros([
-# invertedBinaryDepthMapImageWithClosingOpeningAndErosionHeight,
-# invertedBinaryDepthMapImageWithClosingOpeningAndErosionWidth,3], dtype=np.uint8) whiteImage.fill(255) cv.imwrite(
-# 'whiteImage.png', whiteImage) cv.imshow('White Image',whiteImage)
-
-# Saving Images - Using cv2.imwrite()
+# cv2.imshow("Original Image after Resize", resizedOriginalImage)
 cv2.imwrite('resizedOriginalImage_01.png', resizedOriginalImage)
-cv2.imwrite('invertedBinaryDepthMapImageWithClosingOpeningAndErosion_01.png',
-            invertedBinaryDepthMapImageWithClosingOpeningAndErosion)
+
+# Edge Connect Image Composite Create, Show & Write White Image 
+whiteImage = numpy.zeros([invertedBinaryDepthMapImageWithClosingOpeningAndErosionHeight, invertedBinaryDepthMapImageWithClosingOpeningAndErosionWidth,3], dtype=np.uint8)
+whiteImage.fill(255) 
+cv2.imwrite('whiteImage.png', whiteImage) 
+cv2.imshow('White Image',whiteImage)
 
 # Using Pillow
 # White Image
 resizedOriginalImagePillow = Image.open('resizedOriginalImage_01.png')
 whiteImagePillow = Image.new("1", resizedOriginalImagePillow.size, 255)
+whiteImagePillow.save('whiteImagePillow_01.png')
 # TODO : Bug Fix - Title not showing on image view
 # whiteImagePillow.show(title='White Image Pillow')
 
 # Creating Composite Image
 invertedBinaryDepthMapImageWithClosingOpeningAndErosionPillow = Image.open(
     'invertedBinaryDepthMapImageWithClosingOpeningAndErosion_01.png')
-invertedBinaryDepthMapImageWithClosingOpeningAndErosionPillow.show(
-    title='Inverted Binary Depth Map Image With Closing, Opening And Erosion - Pillow')
+# invertedBinaryDepthMapImageWithClosingOpeningAndErosionPillow.show(
+    # title='Inverted Binary Depth Map Image With Closing, Opening And Erosion - Pillow')
 
 compositeImage = Image.composite(whiteImagePillow, resizedOriginalImagePillow,
                                  invertedBinaryDepthMapImageWithClosingOpeningAndErosionPillow)
@@ -115,9 +115,9 @@ compositeImage = Image.composite(whiteImagePillow, resizedOriginalImagePillow,
 compositeImage.save('compositeImage_01.png')
 
 # Using derainnet
-test_model.test_model(image_path='img_01.png', weights_path='derainnet/model/derain_gan/derain_gan.ckpt-100000')
-deRainNetResult = cv2.imread('derain_ret.png')
-cv2.imshow('DeRainNet Result', deRainNetResult)
+# test_model.test_model(image_path='img_01.png', weights_path='derainnet/model/derain_gan/derain_gan.ckpt-100000')
+# deRainNetResult = cv2.imread('derain_ret.png')
+# cv2.imshow('DeRainNet Result', deRainNetResult)
 
 # Edge Connect
 # Default Config. on places2
