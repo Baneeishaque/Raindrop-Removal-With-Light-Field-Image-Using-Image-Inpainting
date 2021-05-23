@@ -90,7 +90,7 @@ resizedOriginalImage = cv2.resize(lightFieldImage, (invertedBinaryDepthMapImageW
 cv2.imwrite('resizedOriginalImage_01.png', resizedOriginalImage)
 
 # Edge Connect Image Composite Create, Show & Write White Image 
-whiteImage = numpy.zeros([invertedBinaryDepthMapImageWithClosingOpeningAndErosionHeight, invertedBinaryDepthMapImageWithClosingOpeningAndErosionWidth,3], dtype=np.uint8)
+whiteImage = numpy.zeros([invertedBinaryDepthMapImageWithClosingOpeningAndErosionHeight, invertedBinaryDepthMapImageWithClosingOpeningAndErosionWidth,3], dtype=numpy.uint8)
 whiteImage.fill(255) 
 cv2.imwrite('whiteImage.png', whiteImage) 
 cv2.imshow('White Image',whiteImage)
