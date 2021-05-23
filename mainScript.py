@@ -1,16 +1,23 @@
 import os
 import random
+
 from shutil import copyfile
 
 import cv2
 import numpy
 import torch
+
 from PIL import Image
 from scipy import ndimage
 
 from derainnet import test_model
 from edge_connect.src.config import Config
 from edge_connect.src.edge_connect import EdgeConnect
+
+import io
+
+# Imports the Google Cloud client library
+from google.cloud import vision
 
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 
@@ -169,3 +176,24 @@ cv2.imshow('Edge Connect Result', edgeConnectResult)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
+
+# Google Vision API
+# Instantiates a client
+client = vision.ImageAnnotatorClient()
+
+# The name of the image file to annotate
+file_name = './edge_connect/checkpoints/results/compositeImage_01.png'
+
+# Loads the image into memory
+with io.open(file_name, 'rb') as image_file:
+    content = image_file.read()
+
+image = vision.Image(content=content)
+
+# Performs label detection on the image file
+response = client.label_detection(image=image)
+labels = response.label_annotations
+
+print('Labels:')
+for label in labels:
+    print(label.description)

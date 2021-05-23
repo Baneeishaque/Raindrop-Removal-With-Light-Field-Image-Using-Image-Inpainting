@@ -12,8 +12,10 @@ dependencies:
   - scikit-image=0.17.1
   - jupyterlab
   - pillow
-  - pylint
   - tensorflow=1.15.0
   - glog
   - easydict
   - matplotlib
+  - google-cloud-vision
+  - pylint
+
