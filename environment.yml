@@ -17,6 +17,7 @@ dependencies:
   - easydict
   - matplotlib
   - google-cloud-vision
+  - pip
   - pip:
       - azure-cognitiveservices-vision-computervision
   - pylint
