@@ -8,9 +8,19 @@ import torch
 from PIL import Image
 from scipy import ndimage
 
-import AzureComputerVision
 from edge_connect.src.config import Config
 from edge_connect.src.edge_connect import EdgeConnect
+
+import AzureComputerVision
+import ImageQualityAnalysis
+
+# import warnings filter
+# from warnings import simplefilter
+
+
+# TODO : Identify & Fix Warnings
+# ignore all future warnings
+# simplefilter(action='ignore', category=YAMLLoadWarning)
 
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 
@@ -182,3 +192,6 @@ AzureComputerVision.testAzureComputerVisionImageAnalysisOnLocalImage("img_01.png
 print('\n=== Azure Computer Vision Image Analysis Results : Derained Image ===')
 AzureComputerVision.testAzureComputerVisionImageAnalysisOnLocalImage(
     "edge_connect/checkpoints/results/compositeImage_01.png")
+
+ImageQualityAnalysis.performImageQualityAnalysis('img_01.png','Original Image')
+ImageQualityAnalysis.performImageQualityAnalysis('edge_connect/checkpoints/results/compositeImage_01.png','Derained Image')

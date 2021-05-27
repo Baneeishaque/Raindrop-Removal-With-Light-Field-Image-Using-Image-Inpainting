@@ -20,5 +20,7 @@ dependencies:
   - pip
   - pip:
       - azure-cognitiveservices-vision-computervision
+      - scipy==1.2.1
+      - image-quality
   - pylint
 
