@@ -17,6 +17,8 @@ import ImageQualityAnalysis
 # import warnings filter
 # from warnings import simplefilter
 
+import GUI
+
 
 # TODO : Identify & Fix Warnings
 # ignore all future warnings
@@ -195,3 +197,5 @@ AzureComputerVision.testAzureComputerVisionImageAnalysisOnLocalImage(
 
 ImageQualityAnalysis.performImageQualityAnalysis('img_01.png','Original Image')
 ImageQualityAnalysis.performImageQualityAnalysis('edge_connect/checkpoints/results/compositeImage_01.png','Derained Image')
+
+# GUI.showGUI()

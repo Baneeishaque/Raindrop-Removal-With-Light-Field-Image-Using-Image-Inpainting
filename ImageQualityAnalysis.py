@@ -45,7 +45,7 @@ def generalImageQualityAnalysis(imageFile,externalImageName):
     calculateAveragePixelWidth(imageFile,externalImageName)
     getDominentColor(imageFile,externalImageName)
     getAverageColor(imageFile,externalImageName)
-    getBlurrnessScore(imageFile,externalImageName)
+    # getBlurrnessScore(imageFile,externalImageName)
 
 
 def calculateImageDullness(imageFile,externalImageName):
