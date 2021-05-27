@@ -1,6 +1,6 @@
 from azure.cognitiveservices.vision.computervision import ComputerVisionClient
-from azure.cognitiveservices.vision.computervision.models import VisualFeatureTypes
 from msrest.authentication import CognitiveServicesCredentials
+
 
 def initializeComputerVision():
     '''
@@ -15,16 +15,16 @@ def initializeComputerVision():
 
 def testAzureComputerVisionImageAnalysis():
     computervision_client = initializeComputerVision()
-    
+
     remote_image_url = "https://raw.githubusercontent.com/Azure-Samples/cognitive-services-sample-data-files/master/ComputerVision/Images/landmark.jpg"
-    
+
     '''
     Describe an Image - remote
     This example describes the contents of an image with the confidence score.
     '''
     print("===== Describe an image - remote =====")
     # Call API
-    description_results = computervision_client.describe_image(remote_image_url )
+    description_results = computervision_client.describe_image(remote_image_url)
 
     # Get the captions (descriptions) from the response, with confidence level
     print("Description of remote image: ")
@@ -42,7 +42,7 @@ def testAzureComputerVisionImageAnalysis():
     # Select the visual feature(s) you want.
     remote_image_features = ["categories"]
     # Call API with URL and features
-    categorize_results_remote = computervision_client.analyze_image(remote_image_url , remote_image_features)
+    categorize_results_remote = computervision_client.analyze_image(remote_image_url, remote_image_features)
 
     # Print results with confidence score
     print("Categories from remote image: ")
@@ -50,7 +50,7 @@ def testAzureComputerVisionImageAnalysis():
         print("No categories detected.")
     else:
         for category in categorize_results_remote.categories:
-            print("'{}' with confidence {:.2f}%".format(category.name, category.score * 100))    
+            print("'{}' with confidence {:.2f}%".format(category.name, category.score * 100))
 
     '''
     Tag an Image - remote
@@ -58,7 +58,7 @@ def testAzureComputerVisionImageAnalysis():
     '''
     print("===== Tag an image - remote =====")
     # Call API with remote image
-    tags_result_remote = computervision_client.tag_image(remote_image_url )
+    tags_result_remote = computervision_client.tag_image(remote_image_url)
 
     # Print results with confidence score
     print("Tags in the remote image: ")
@@ -85,8 +85,8 @@ def testAzureComputerVisionImageAnalysis():
     else:
         for object in detect_objects_results_remote.objects:
             print("object {} at location {}, {}, {}, {}".format( \
-            object.object_property,object.rectangle.x, object.rectangle.x + object.rectangle.w, \
-            object.rectangle.y, object.rectangle.y + object.rectangle.h))
+                object.object_property, object.rectangle.x, object.rectangle.x + object.rectangle.w, \
+                object.rectangle.y, object.rectangle.y + object.rectangle.h))
 
     '''
     Detect Brands - remote
@@ -106,8 +106,8 @@ def testAzureComputerVisionImageAnalysis():
     else:
         for brand in detect_brands_results_remote.brands:
             print("'{}' brand detected with confidence {:.1f}% at location {}, {}, {}, {}".format( \
-            brand.name, brand.confidence * 100, brand.rectangle.x, brand.rectangle.x + brand.rectangle.w, \
-            brand.rectangle.y, brand.rectangle.y + brand.rectangle.h))
+                brand.name, brand.confidence * 100, brand.rectangle.x, brand.rectangle.x + brand.rectangle.w, \
+                brand.rectangle.y, brand.rectangle.y + brand.rectangle.h))
 
     '''
     Detect Faces - remote
@@ -129,10 +129,10 @@ def testAzureComputerVisionImageAnalysis():
     else:
         for face in detect_faces_results_remote.faces:
             print("'{}' of age {} at location {}, {}, {}, {}".format(face.gender, face.age, \
-            face.face_rectangle.left, face.face_rectangle.top, \
-            face.face_rectangle.left + face.face_rectangle.width, \
-            face.face_rectangle.top + face.face_rectangle.height))
-        
+                                                                     face.face_rectangle.left, face.face_rectangle.top, \
+                                                                     face.face_rectangle.left + face.face_rectangle.width, \
+                                                                     face.face_rectangle.top + face.face_rectangle.height))
+
     '''
     Detect Adult or Racy Content - remote
     This example detects adult or racy content in a remote image, then prints the adult/racy score.
@@ -146,8 +146,10 @@ def testAzureComputerVisionImageAnalysis():
 
     # Print results with adult/racy score
     print("Analyzing remote image for adult or racy content ... ")
-    print("Is adult content: {} with confidence {:.2f}".format(detect_adult_results_remote.adult.is_adult_content, detect_adult_results_remote.adult.adult_score * 100))
-    print("Has racy content: {} with confidence {:.2f}".format(detect_adult_results_remote.adult.is_racy_content, detect_adult_results_remote.adult.racy_score * 100))
+    print("Is adult content: {} with confidence {:.2f}".format(detect_adult_results_remote.adult.is_adult_content,
+                                                               detect_adult_results_remote.adult.adult_score * 100))
+    print("Has racy content: {} with confidence {:.2f}".format(detect_adult_results_remote.adult.is_racy_content,
+                                                               detect_adult_results_remote.adult.racy_score * 100))
 
     '''
     Detect Color - remote
@@ -175,7 +177,8 @@ def testAzureComputerVisionImageAnalysis():
     # URL of one or more celebrities
     remote_image_url_celebs = "https://raw.githubusercontent.com/Azure-Samples/cognitive-services-sample-data-files/master/ComputerVision/Images/faces.jpg"
     # Call API with content type (celebrities) and URL
-    detect_domain_results_celebs_remote = computervision_client.analyze_image_by_domain("celebrities", remote_image_url_celebs)
+    detect_domain_results_celebs_remote = computervision_client.analyze_image_by_domain("celebrities",
+                                                                                        remote_image_url_celebs)
 
     # Print detection results with name
     print("Celebrities in the remote image:")
@@ -184,7 +187,7 @@ def testAzureComputerVisionImageAnalysis():
     else:
         for celeb in detect_domain_results_celebs_remote.result["celebrities"]:
             print(celeb["name"])
-    
+
     # Call API with content type (landmarks) and URL
     detect_domain_results_landmarks = computervision_client.analyze_image_by_domain("landmarks", remote_image_url)
     print()
@@ -238,7 +241,7 @@ def testAzureComputerVisionOCR():
     read_image_url = "https://raw.githubusercontent.com/MicrosoftDocs/azure-docs/master/articles/cognitive-services/Computer-vision/Images/readsample.jpg"
 
     # Call API with URL and raw response (allows you to get the operation location)
-    read_response = computervision_client.read(read_image_url,  raw=True)
+    read_response = computervision_client.read(read_image_url, raw=True)
 
     # Get the operation location (URL with an ID at the end) from the response
     read_operation_location = read_response.headers["Operation-Location"]
@@ -260,14 +263,15 @@ def testAzureComputerVisionOCR():
                 print(line.bounding_box)
     print()
 
+
 def testAzureComputerVisionImageAnalysisOnLocalImage(imageFile):
     computervision_client = initializeComputerVision()
-        
+
     '''
     Describe an Image - local
     This example describes the contents of an image with the confidence score.
     '''
-    localImage = open(imageFile,"rb")
+    localImage = open(imageFile, "rb")
     print("===== Describe an image - local =====")
     # Call API
     description_results = computervision_client.describe_image_in_stream(localImage)
@@ -284,12 +288,12 @@ def testAzureComputerVisionImageAnalysisOnLocalImage(imageFile):
     Categorize an Image - local
     This example extracts (general) categories from a local image with a confidence score.
     '''
-    localImage = open(imageFile,"rb")
+    localImage = open(imageFile, "rb")
     print("===== Categorize an image - local =====")
     # Select the visual feature(s) you want.
     local_image_features = ["categories"]
     # Call API with URL and features
-    categorize_results_local = computervision_client.analyze_image_in_stream(localImage , local_image_features)
+    categorize_results_local = computervision_client.analyze_image_in_stream(localImage, local_image_features)
 
     # Print results with confidence score
     print("Categories from local image: ")
@@ -297,13 +301,13 @@ def testAzureComputerVisionImageAnalysisOnLocalImage(imageFile):
         print("No categories detected.")
     else:
         for category in categorize_results_local.categories:
-            print("'{}' with confidence {:.2f}%".format(category.name, category.score * 100))    
+            print("'{}' with confidence {:.2f}%".format(category.name, category.score * 100))
 
     '''
     Tag an Image - local
     This example returns a tag (key word) for each thing in the image.
     '''
-    localImage = open(imageFile,"rb")
+    localImage = open(imageFile, "rb")
     print("===== Tag an image - local =====")
     # Call API with local image
     tags_result_local = computervision_client.tag_image_in_stream(localImage)
@@ -322,7 +326,7 @@ def testAzureComputerVisionImageAnalysisOnLocalImage(imageFile):
     '''
     print("===== Detect Objects - local =====")
     # Get local image with different objects
-    local_image_of_objects = open(imageFile,"rb")
+    local_image_of_objects = open(imageFile, "rb")
     # Call API with local Image
     detect_objects_results_local = computervision_client.detect_objects_in_stream(local_image_of_objects)
 
@@ -333,8 +337,8 @@ def testAzureComputerVisionImageAnalysisOnLocalImage(imageFile):
     else:
         for object in detect_objects_results_local.objects:
             print("object {} at location {}, {}, {}, {}".format( \
-            object.object_property,object.rectangle.x, object.rectangle.x + object.rectangle.w, \
-            object.rectangle.y, object.rectangle.y + object.rectangle.h))
+                object.object_property, object.rectangle.x, object.rectangle.x + object.rectangle.w, \
+                object.rectangle.y, object.rectangle.y + object.rectangle.h))
 
     '''
     Detect Brands - local
@@ -342,11 +346,12 @@ def testAzureComputerVisionImageAnalysisOnLocalImage(imageFile):
     '''
     print("===== Detect Brands - local =====")
     # Get a local image with a brand logo
-    local_image_with_brands = open(imageFile,"rb")
+    local_image_with_brands = open(imageFile, "rb")
     # Select the visual feature(s) you want
     local_image_features = ["brands"]
     # Call API with image and features
-    detect_brands_results_local = computervision_client.analyze_image_in_stream(local_image_with_brands, local_image_features)
+    detect_brands_results_local = computervision_client.analyze_image_in_stream(local_image_with_brands,
+                                                                                local_image_features)
 
     print("Detecting brands in local image: ")
     if len(detect_brands_results_local.brands) == 0:
@@ -354,8 +359,8 @@ def testAzureComputerVisionImageAnalysisOnLocalImage(imageFile):
     else:
         for brand in detect_brands_results_local.brands:
             print("'{}' brand detected with confidence {:.1f}% at location {}, {}, {}, {}".format( \
-            brand.name, brand.confidence * 100, brand.rectangle.x, brand.rectangle.x + brand.rectangle.w, \
-            brand.rectangle.y, brand.rectangle.y + brand.rectangle.h))
+                brand.name, brand.confidence * 100, brand.rectangle.x, brand.rectangle.x + brand.rectangle.w, \
+                brand.rectangle.y, brand.rectangle.y + brand.rectangle.h))
 
     '''
     Detect Faces - local
@@ -364,11 +369,12 @@ def testAzureComputerVisionImageAnalysisOnLocalImage(imageFile):
     '''
     print("===== Detect Faces - local =====")
     # Get an image with faces
-    local_image_with_faces = open(imageFile,"rb")
+    local_image_with_faces = open(imageFile, "rb")
     # Select the visual feature(s) you want.
     local_image_features = ["faces"]
     # Call the API with image and features
-    detect_faces_results_local = computervision_client.analyze_image_in_stream(local_image_with_faces, local_image_features)
+    detect_faces_results_local = computervision_client.analyze_image_in_stream(local_image_with_faces,
+                                                                               local_image_features)
 
     # Print the results with gender, age, and bounding box
     print("Faces in the local image: ")
@@ -377,26 +383,29 @@ def testAzureComputerVisionImageAnalysisOnLocalImage(imageFile):
     else:
         for face in detect_faces_results_local.faces:
             print("'{}' of age {} at location {}, {}, {}, {}".format(face.gender, face.age, \
-            face.face_rectangle.left, face.face_rectangle.top, \
-            face.face_rectangle.left + face.face_rectangle.width, \
-            face.face_rectangle.top + face.face_rectangle.height))
-        
+                                                                     face.face_rectangle.left, face.face_rectangle.top, \
+                                                                     face.face_rectangle.left + face.face_rectangle.width, \
+                                                                     face.face_rectangle.top + face.face_rectangle.height))
+
     '''
     Detect Adult or Racy Content - local
     This example detects adult or racy content in a local image, then prints the adult/racy score.
     The score is ranged 0.0 - 1.0 with smaller numbers indicating negative results.
     '''
-    local_image_with_brands = open(imageFile,"rb")
+    local_image_with_brands = open(imageFile, "rb")
     print("===== Detect Adult or Racy Content - local =====")
     # Select the visual feature(s) you want
     local_image_features = ["adult"]
     # Call API with image and features
-    detect_adult_results_local = computervision_client.analyze_image_in_stream(local_image_with_brands, local_image_features)
+    detect_adult_results_local = computervision_client.analyze_image_in_stream(local_image_with_brands,
+                                                                               local_image_features)
 
     # Print results with adult/racy score
     print("Analyzing local image for adult or racy content ... ")
-    print("Is adult content: {} with confidence {:.2f}".format(detect_adult_results_local.adult.is_adult_content, detect_adult_results_local.adult.adult_score * 100))
-    print("Has racy content: {} with confidence {:.2f}".format(detect_adult_results_local.adult.is_racy_content, detect_adult_results_local.adult.racy_score * 100))
+    print("Is adult content: {} with confidence {:.2f}".format(detect_adult_results_local.adult.is_adult_content,
+                                                               detect_adult_results_local.adult.adult_score * 100))
+    print("Has racy content: {} with confidence {:.2f}".format(detect_adult_results_local.adult.is_racy_content,
+                                                               detect_adult_results_local.adult.racy_score * 100))
 
     # '''
     # Detect Color - local
@@ -421,12 +430,13 @@ def testAzureComputerVisionImageAnalysisOnLocalImage(imageFile):
     Detect Domain-specific Content - local
     This example detects celebrites and landmarks in local images.
     '''
-    local_image_with_faces = open(imageFile,"rb")
-    local_image_with_brands = open(imageFile,"rb")
+    local_image_with_faces = open(imageFile, "rb")
+    local_image_with_brands = open(imageFile, "rb")
     print("===== Detect Domain-specific Content - local =====")
     # Image of one or more celebrities : faces.jpg
     # Call API with content type (celebrities) and image
-    detect_domain_results_celebs_local = computervision_client.analyze_image_by_domain_in_stream("celebrities", local_image_with_faces)
+    detect_domain_results_celebs_local = computervision_client.analyze_image_by_domain_in_stream("celebrities",
+                                                                                                 local_image_with_faces)
 
     # Print detection results with name
     print("Celebrities in the local image:")
@@ -435,9 +445,10 @@ def testAzureComputerVisionImageAnalysisOnLocalImage(imageFile):
     else:
         for celeb in detect_domain_results_celebs_local.result["celebrities"]:
             print(celeb["name"])
-    
+
     # Call API with content type (landmarks) and image
-    detect_domain_results_landmarks = computervision_client.analyze_image_by_domain_in_stream("landmarks", local_image_with_brands)
+    detect_domain_results_landmarks = computervision_client.analyze_image_by_domain_in_stream("landmarks",
+                                                                                              local_image_with_brands)
     print()
 
     print("Landmarks in the local image:")
@@ -474,4 +485,3 @@ def testAzureComputerVisionImageAnalysisOnLocalImage(imageFile):
     #     print("Image is not a line drawing.")
     # else:
     #     print("Image is a line drawing")
-

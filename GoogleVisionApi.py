@@ -3,6 +3,7 @@ import io
 # Imports the Google Cloud client library
 from google.cloud import vision
 
+
 # Parameter : The name of the image file to annotate
 def testGoogleVisionApi(file_name):
     # Google Vision API

@@ -1,7 +1,7 @@
 # Anaconda3-2020.11
 
 trigger:
-- main
+  - main
 
 strategy:
   matrix:
@@ -23,7 +23,7 @@ pool:
 steps:
   - checkout: self
     submodules: recursive
-  
+
   - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
     displayName: Add conda to PATH On Windows
@@ -37,37 +37,37 @@ steps:
     condition: eq( variables['Agent.OS'], 'Darwin' )
     displayName: Take ownership of conda installation on macOS
 
-#   - task: Cache@2
-#     displayName: Use cached Anaconda environment
-#     inputs:
-#       key: 'conda | "$(ANACONDA_VERSION)" | "$(TIME_STAMP)" | "$(Agent.OS)" | environment.yml'
-#       restoreKeys: | 
-#         python | "$(Agent.OS)"
-#         python
-#       path: $(CONDA_CACHE_DIR)
-#       cacheHitVar: CONDA_CACHE_RESTORED
+  #   - task: Cache@2
+  #     displayName: Use cached Anaconda environment
+  #     inputs:
+  #       key: 'conda | "$(ANACONDA_VERSION)" | "$(TIME_STAMP)" | "$(Agent.OS)" | environment.yml'
+  #       restoreKeys: |
+  #         python | "$(Agent.OS)"
+  #         python
+  #       path: $(CONDA_CACHE_DIR)
+  #       cacheHitVar: CONDA_CACHE_RESTORED
 
-#   - script: conda config --set channel_priority strict
-#     displayName: Set Channel Priority to Strict on Anaconda environment
-#     condition: eq(variables.CONDA_CACHE_RESTORED, 'false')
+  #   - script: conda config --set channel_priority strict
+  #     displayName: Set Channel Priority to Strict on Anaconda environment
+  #     condition: eq(variables.CONDA_CACHE_RESTORED, 'false')
 
   - script: conda update -y --all
     displayName: Update Anaconda environment
-#     condition: eq(variables.CONDA_CACHE_RESTORED, 'false')
+  #     condition: eq(variables.CONDA_CACHE_RESTORED, 'false')
 
   - script: conda env create --file environment.yml
     displayName: Create Anaconda environment
-#     condition: eq(variables.CONDA_CACHE_RESTORED, 'false')
+    #     condition: eq(variables.CONDA_CACHE_RESTORED, 'false')
 
-#   - script: conda init cmd.exe
-#     displayName: Configure shell for Anaconda environment on Windows
-#     condition: eq( variables['Agent.OS'], 'Windows_NT' )
-    
-#   - script: |
-#       conda activate Raindrop-Removal-With-Light-Field-Image-Using-Image-Inpainting
-#       # python mainScript.py
-#     displayName: Run mainScript.py on Windows
-#     condition: eq( variables['Agent.OS'], 'Windows_NT' )
+    #   - script: conda init cmd.exe
+    #     displayName: Configure shell for Anaconda environment on Windows
+    #     condition: eq( variables['Agent.OS'], 'Windows_NT' )
+
+  #   - script: |
+  #       conda activate Raindrop-Removal-With-Light-Field-Image-Using-Image-Inpainting
+  #       # python mainScript.py
+  #     displayName: Run mainScript.py on Windows
+  #     condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
   - bash: |
       eval "$(conda shell.bash hook)"

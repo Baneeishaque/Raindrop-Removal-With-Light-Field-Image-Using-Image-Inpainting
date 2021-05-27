@@ -1,21 +1,16 @@
 import os
 import random
-
 from shutil import copyfile
 
 import cv2
 import numpy
 import torch
-
 from PIL import Image
 from scipy import ndimage
 
-from derainnet import test_model
+import AzureComputerVision
 from edge_connect.src.config import Config
 from edge_connect.src.edge_connect import EdgeConnect
-
-import GoogleVisionApi
-import AzureComputerVision
 
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 
@@ -79,7 +74,8 @@ cv2.imshow("Original Image", lightFieldImage)
 cv2.imwrite('highPassFilteredImage_01.png', highPassFilteredImage)
 
 # Resizing High Pass Filtered Image
-invertedBinaryDepthMapImageWithClosingOpeningAndErosionHeight, invertedBinaryDepthMapImageWithClosingOpeningAndErosionWidth = invertedBinaryDepthMapImageWithClosingOpeningAndErosion.shape[:2]
+invertedBinaryDepthMapImageWithClosingOpeningAndErosionHeight, invertedBinaryDepthMapImageWithClosingOpeningAndErosionWidth = invertedBinaryDepthMapImageWithClosingOpeningAndErosion.shape[
+                                                                                                                              :2]
 
 resizedHighPassFilteredImage = cv2.resize(highPassFilteredImage, (
     invertedBinaryDepthMapImageWithClosingOpeningAndErosionWidth,
@@ -95,9 +91,10 @@ resizedOriginalImage = cv2.resize(lightFieldImage, (invertedBinaryDepthMapImageW
 cv2.imwrite('resizedOriginalImage_01.png', resizedOriginalImage)
 
 # Edge Connect Image Composite Create, Show & Write White Image 
-whiteImage = numpy.zeros([invertedBinaryDepthMapImageWithClosingOpeningAndErosionHeight, invertedBinaryDepthMapImageWithClosingOpeningAndErosionWidth,3], dtype=numpy.uint8)
-whiteImage.fill(255) 
-cv2.imwrite('whiteImage.png', whiteImage) 
+whiteImage = numpy.zeros([invertedBinaryDepthMapImageWithClosingOpeningAndErosionHeight,
+                          invertedBinaryDepthMapImageWithClosingOpeningAndErosionWidth, 3], dtype=numpy.uint8)
+whiteImage.fill(255)
+cv2.imwrite('whiteImage.png', whiteImage)
 # cv2.imshow('White Image',whiteImage)
 
 # Using Pillow
@@ -112,7 +109,7 @@ whiteImagePillow.save('whiteImagePillow_01.png')
 invertedBinaryDepthMapImageWithClosingOpeningAndErosionPillow = Image.open(
     'invertedBinaryDepthMapImageWithClosingOpeningAndErosion_01.png')
 # invertedBinaryDepthMapImageWithClosingOpeningAndErosionPillow.show(
-    # title='Inverted Binary Depth Map Image With Closing, Opening And Erosion - Pillow')
+# title='Inverted Binary Depth Map Image With Closing, Opening And Erosion - Pillow')
 
 compositeImage = Image.composite(whiteImagePillow, resizedOriginalImagePillow,
                                  invertedBinaryDepthMapImageWithClosingOpeningAndErosionPillow)
@@ -183,4 +180,5 @@ cv2.destroyAllWindows()
 print('\n=== Azure Computer Vision Image Analysis Results : Original Image ===')
 AzureComputerVision.testAzureComputerVisionImageAnalysisOnLocalImage("img_01.png")
 print('\n=== Azure Computer Vision Image Analysis Results : Derained Image ===')
-AzureComputerVision.testAzureComputerVisionImageAnalysisOnLocalImage("edge_connect/checkpoints/results/compositeImage_01.png")
+AzureComputerVision.testAzureComputerVisionImageAnalysisOnLocalImage(
+    "edge_connect/checkpoints/results/compositeImage_01.png")
