@@ -1,4 +1,4 @@
-FROM baneeishaque/gp-vnc-pcman-zsh-as-gh-chrome-idea-pycharm-conda3-hb-scrcpy-r-zilla-gram-matlab-mysql-storm-1536x722
+FROM baneeishaque/gp-vnc-pcman-zsh-as-gh-chrome-idea-pycharm-conda3-hb-scrcpy-r-lfs-zilla-gram-matlab-mysql-phpstorm
 
 RUN cd $HOME \
  && wget "https://raw.githubusercontent.com/Baneeishaque/Raindrop-Removal-With-Light-Field-Image-Using-Image-Inpainting/main/environment.yml" \
